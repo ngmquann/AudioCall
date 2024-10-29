@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AudioCall.Properties
+namespace Client.Properties
 {
 
 

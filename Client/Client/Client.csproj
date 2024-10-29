@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C6368EDF-EFFE-4CDC-B201-082E327831EA}</ProjectGuid>
+    <ProjectGuid>{1E2B4417-4D03-4476-B4E3-170DC1B15A83}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>AudioCall</RootNamespace>
-    <AssemblyName>AudioCall</AssemblyName>
+    <RootNamespace>Client</RootNamespace>
+    <AssemblyName>Client</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

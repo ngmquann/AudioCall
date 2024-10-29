@@ -1,4 +1,4 @@
-﻿namespace AudioCall
+﻿namespace Server
 {
     partial class Form1
     {
