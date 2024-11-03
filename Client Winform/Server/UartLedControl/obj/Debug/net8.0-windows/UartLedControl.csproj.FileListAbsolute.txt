@@ -1,0 +1,115 @@
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.exe
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.deps.json
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.runtimeconfig.json
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.pdb
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\bin\Debug\net8.0-windows\NAudio.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\bin\Debug\net8.0-windows\NAudio.Asio.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\bin\Debug\net8.0-windows\NAudio.Core.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\bin\Debug\net8.0-windows\NAudio.Midi.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\bin\Debug\net8.0-windows\NAudio.Wasapi.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\bin\Debug\net8.0-windows\NAudio.WinForms.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\bin\Debug\net8.0-windows\NAudio.WinMM.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.csproj.AssemblyReference.cache
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.GeneratedMSBuildEditorConfig.editorconfig
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.AssemblyInfoInputs.cache
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.AssemblyInfo.cs
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.csproj.CoreCompileInputs.cache
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\obj\Debug\net8.0-windows\UartLedC.0831CE97.Up2Date
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\obj\Debug\net8.0-windows\refint\UartLedControl.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.pdb
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.genruntimeconfig.cache
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\project\UartLedControl\obj\Debug\net8.0-windows\ref\UartLedControl.dll
+C:\Users\HP\Downloads\project\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.exe
+C:\Users\HP\Downloads\project\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.deps.json
+C:\Users\HP\Downloads\project\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.runtimeconfig.json
+C:\Users\HP\Downloads\project\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.dll
+C:\Users\HP\Downloads\project\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.pdb
+C:\Users\HP\Downloads\project\UartLedControl\bin\Debug\net8.0-windows\NAudio.dll
+C:\Users\HP\Downloads\project\UartLedControl\bin\Debug\net8.0-windows\NAudio.Asio.dll
+C:\Users\HP\Downloads\project\UartLedControl\bin\Debug\net8.0-windows\NAudio.Core.dll
+C:\Users\HP\Downloads\project\UartLedControl\bin\Debug\net8.0-windows\NAudio.Midi.dll
+C:\Users\HP\Downloads\project\UartLedControl\bin\Debug\net8.0-windows\NAudio.Wasapi.dll
+C:\Users\HP\Downloads\project\UartLedControl\bin\Debug\net8.0-windows\NAudio.WinForms.dll
+C:\Users\HP\Downloads\project\UartLedControl\bin\Debug\net8.0-windows\NAudio.WinMM.dll
+C:\Users\HP\Downloads\project\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.csproj.AssemblyReference.cache
+C:\Users\HP\Downloads\project\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\Downloads\project\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.AssemblyInfoInputs.cache
+C:\Users\HP\Downloads\project\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.AssemblyInfo.cs
+C:\Users\HP\Downloads\project\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.csproj.CoreCompileInputs.cache
+C:\Users\HP\Downloads\project\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.csproj.CopyComplete
+C:\Users\HP\Downloads\project\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.dll
+C:\Users\HP\Downloads\project\UartLedControl\obj\Debug\net8.0-windows\refint\UartLedControl.dll
+C:\Users\HP\Downloads\project\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.pdb
+C:\Users\HP\Downloads\project\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.genruntimeconfig.cache
+C:\Users\HP\Downloads\project\UartLedControl\obj\Debug\net8.0-windows\ref\UartLedControl.dll
+C:\Users\HP\Downloads\Server\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.exe
+C:\Users\HP\Downloads\Server\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.deps.json
+C:\Users\HP\Downloads\Server\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.runtimeconfig.json
+C:\Users\HP\Downloads\Server\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.dll
+C:\Users\HP\Downloads\Server\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.pdb
+C:\Users\HP\Downloads\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.dll
+C:\Users\HP\Downloads\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.Asio.dll
+C:\Users\HP\Downloads\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.Core.dll
+C:\Users\HP\Downloads\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.Midi.dll
+C:\Users\HP\Downloads\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.Wasapi.dll
+C:\Users\HP\Downloads\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.WinForms.dll
+C:\Users\HP\Downloads\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.WinMM.dll
+C:\Users\HP\Downloads\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.csproj.AssemblyReference.cache
+C:\Users\HP\Downloads\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\Downloads\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.AssemblyInfoInputs.cache
+C:\Users\HP\Downloads\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.AssemblyInfo.cs
+C:\Users\HP\Downloads\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.csproj.CoreCompileInputs.cache
+C:\Users\HP\Downloads\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.csproj.CopyComplete
+C:\Users\HP\Downloads\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.dll
+C:\Users\HP\Downloads\Server\UartLedControl\obj\Debug\net8.0-windows\refint\UartLedControl.dll
+C:\Users\HP\Downloads\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.pdb
+C:\Users\HP\Downloads\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.genruntimeconfig.cache
+C:\Users\HP\Downloads\Server\UartLedControl\obj\Debug\net8.0-windows\ref\UartLedControl.dll
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.exe
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.deps.json
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.runtimeconfig.json
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.dll
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.pdb
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.dll
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.Asio.dll
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.Core.dll
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.Midi.dll
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.Wasapi.dll
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.WinForms.dll
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.WinMM.dll
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.csproj.AssemblyReference.cache
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.AssemblyInfoInputs.cache
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.AssemblyInfo.cs
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.csproj.CoreCompileInputs.cache
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.csproj.CopyComplete
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.dll
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\refint\UartLedControl.dll
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.pdb
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.genruntimeconfig.cache
+C:\Users\HP\Downloads\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\ref\UartLedControl.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.exe
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.deps.json
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.runtimeconfig.json
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\UartLedControl.pdb
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.Asio.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.Core.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.Midi.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.Wasapi.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.WinForms.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\bin\Debug\net8.0-windows\NAudio.WinMM.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.csproj.AssemblyReference.cache
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.GeneratedMSBuildEditorConfig.editorconfig
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.AssemblyInfoInputs.cache
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.AssemblyInfo.cs
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.csproj.CoreCompileInputs.cache
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedC.0831CE97.Up2Date
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\refint\UartLedControl.dll
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.pdb
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\UartLedControl.genruntimeconfig.cache
+D:\Dai hoc\HK III\Lập trình mạng\Tren truong\làm bài tập nhóm\Client & Server\Server\UartLedControl\obj\Debug\net8.0-windows\ref\UartLedControl.dll
