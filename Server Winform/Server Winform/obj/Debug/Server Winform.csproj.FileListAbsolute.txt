@@ -1,0 +1,10 @@
+C:\Users\pC\source\repos\Server Winform\Server Winform\obj\Debug\Server Winform.csproj.AssemblyReference.cache
+C:\Users\pC\source\repos\Server Winform\Server Winform\obj\Debug\Server.Form1.resources
+C:\Users\pC\source\repos\Server Winform\Server Winform\obj\Debug\Server_Winform.Properties.Resources.resources
+C:\Users\pC\source\repos\Server Winform\Server Winform\obj\Debug\Server Winform.csproj.GenerateResource.cache
+C:\Users\pC\source\repos\Server Winform\Server Winform\obj\Debug\Server Winform.csproj.CoreCompileInputs.cache
+C:\Users\pC\source\repos\Server Winform\Server Winform\bin\Debug\Server Winform.exe.config
+C:\Users\pC\source\repos\Server Winform\Server Winform\bin\Debug\Server Winform.exe
+C:\Users\pC\source\repos\Server Winform\Server Winform\bin\Debug\Server Winform.pdb
+C:\Users\pC\source\repos\Server Winform\Server Winform\obj\Debug\Server Winform.exe
+C:\Users\pC\source\repos\Server Winform\Server Winform\obj\Debug\Server Winform.pdb

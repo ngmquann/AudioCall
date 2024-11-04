@@ -7,3 +7,12 @@ C:\Users\HP\AudioCall\Client\Client\obj\Debug\Client.csproj.GenerateResource.cac
 C:\Users\HP\AudioCall\Client\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
 C:\Users\HP\AudioCall\Client\Client\obj\Debug\Client.exe
 C:\Users\HP\AudioCall\Client\Client\obj\Debug\Client.pdb
+D:\audio-call\AudioCall\Client Winform\Client\bin\Debug\Client.exe.config
+D:\audio-call\AudioCall\Client Winform\Client\bin\Debug\Client.exe
+D:\audio-call\AudioCall\Client Winform\Client\bin\Debug\Client.pdb
+D:\audio-call\AudioCall\Client Winform\Client\obj\Debug\Client.csproj.AssemblyReference.cache
+D:\audio-call\AudioCall\Client Winform\Client\obj\Debug\Client.Properties.Resources.resources
+D:\audio-call\AudioCall\Client Winform\Client\obj\Debug\Client.csproj.GenerateResource.cache
+D:\audio-call\AudioCall\Client Winform\Client\obj\Debug\Client.csproj.CoreCompileInputs.cache
+D:\audio-call\AudioCall\Client Winform\Client\obj\Debug\Client.exe
+D:\audio-call\AudioCall\Client Winform\Client\obj\Debug\Client.pdb

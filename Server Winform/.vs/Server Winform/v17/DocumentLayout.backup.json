@@ -1,0 +1,88 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\pC\\source\\repos\\Server Winform\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{94491C3B-2DFC-43F7-8D24-F1F696805E54}|Server Winform\\Server Winform.csproj|C:\\Users\\pC\\source\\repos\\Server Winform\\server winform\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{94491C3B-2DFC-43F7-8D24-F1F696805E54}|Server Winform\\Server Winform.csproj|solutionrelative:server winform\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\audio-call\\AudioCall\\Server Winform\\Server\\Form1.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{94491C3B-2DFC-43F7-8D24-F1F696805E54}|Server Winform\\Server Winform.csproj|c:\\users\\pc\\source\\repos\\server winform\\server winform\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{94491C3B-2DFC-43F7-8D24-F1F696805E54}|Server Winform\\Server Winform.csproj|solutionrelative:server winform\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{94491C3B-2DFC-43F7-8D24-F1F696805E54}|Server Winform\\Server Winform.csproj|C:\\Users\\pC\\source\\repos\\Server Winform\\server winform\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{94491C3B-2DFC-43F7-8D24-F1F696805E54}|Server Winform\\Server Winform.csproj|solutionrelative:server winform\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e5c86464-96be-4d7c-9a8b-abcb3bbf5f92}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\pC\\source\\repos\\Server Winform\\Server Winform\\Program.cs",
+              "RelativeDocumentMoniker": "Server Winform\\Program.cs",
+              "ToolTip": "C:\\Users\\pC\\source\\repos\\Server Winform\\Server Winform\\Program.cs",
+              "RelativeToolTip": "Server Winform\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-04T05:49:43.026Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Form1.Designer.cs",
+              "DocumentMoniker": "D:\\audio-call\\AudioCall\\Server Winform\\Server\\Form1.Designer.cs",
+              "ToolTip": "D:\\audio-call\\AudioCall\\Server Winform\\Server\\Form1.Designer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-04T05:46:09.578Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "C:\\Users\\pC\\source\\repos\\Server Winform\\Server Winform\\Form1.cs",
+              "RelativeDocumentMoniker": "Server Winform\\Form1.cs",
+              "ToolTip": "C:\\Users\\pC\\source\\repos\\Server Winform\\Server Winform\\Form1.cs",
+              "RelativeToolTip": "Server Winform\\Form1.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAYwIkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-04T05:45:37.343Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Form1.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\pC\\source\\repos\\Server Winform\\Server Winform\\Form1.cs",
+              "RelativeDocumentMoniker": "Server Winform\\Form1.cs",
+              "ToolTip": "C:\\Users\\pC\\source\\repos\\Server Winform\\Server Winform\\Form1.cs [Design]",
+              "RelativeToolTip": "Server Winform\\Form1.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-04T05:45:34.859Z",
+              "EditorCaption": " [Design]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
