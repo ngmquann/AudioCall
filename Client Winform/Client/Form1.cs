@@ -1,18 +1,18 @@
 ﻿using System;
-using System.Collections.Generic; 
-using System.Drawing; 
+using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Client
 {
     public partial class Form1 : Form
     {
-        private List<string> connectionHistory; 
+        private List<string> connectionHistory;
 
         public Form1()
         {
             InitializeComponent();
-            connectionHistory = new List<string>(); 
+            connectionHistory = new List<string>();
             ShowIntroduction();
         }
 
@@ -27,7 +27,7 @@ namespace Client
                 Dock = DockStyle.Fill,
                 Font = new Font("Arial", 16, FontStyle.Bold),
                 ForeColor = Color.White,
-                BackColor = Color.Black
+                BackColor = Color.FromArgb(47, 54, 64) 
             };
             mainPanel.Controls.Add(introLabel);
         }
@@ -36,10 +36,9 @@ namespace Client
         {
             mainPanel.Controls.Clear();
 
-           
             TextBox ipAddressTextBox = new TextBox
             {
-                Location = new Point(200, 50),
+                Location = new Point(100, 50),
                 Name = "ipAddressTextBox",
                 Size = new Size(250, 30),
                 Font = new Font("Arial", 12),
@@ -47,7 +46,6 @@ namespace Client
                 Text = "Nhập địa chỉ IP của Server"
             };
 
-            
             ipAddressTextBox.GotFocus += (s, e) =>
             {
                 if (ipAddressTextBox.Text == "Nhập địa chỉ IP của Server")
@@ -57,7 +55,6 @@ namespace Client
                 }
             };
 
-           
             ipAddressTextBox.LostFocus += (s, e) =>
             {
                 if (string.IsNullOrWhiteSpace(ipAddressTextBox.Text))
@@ -67,10 +64,9 @@ namespace Client
                 }
             };
 
-
             Button connectButton = new Button
             {
-                Location = new Point(200, 100),
+                Location = new Point(100, 100),
                 Name = "connectButton",
                 Size = new Size(100, 50),
                 Text = "Connect",
@@ -86,7 +82,7 @@ namespace Client
 
             Button endButton = new Button
             {
-                Location = new Point(350, 100),
+                Location = new Point(250, 100),
                 Name = "endButton",
                 Size = new Size(100, 50),
                 Text = "End Call",
@@ -102,7 +98,7 @@ namespace Client
 
             Label myLabel = new Label
             {
-                Location = new Point(200, 180),
+                Location = new Point(100, 180),
                 Name = "myLabel",
                 Size = new Size(250, 40),
                 Text = "Status: Idle",
@@ -114,36 +110,50 @@ namespace Client
 
             TrackBar volumeBar = new TrackBar
             {
-                Location = new Point(200, 240),
+                Location = new Point(100, 240),
                 Name = "volumeBar",
                 Size = new Size(250, 45),
                 Minimum = 0,
                 Maximum = 100,
                 Value = 50,
                 TickFrequency = 10,
-                BackColor = Color.Black
+                BackColor = Color.FromArgb(47, 54, 64) 
             };
             volumeBar.Anchor = AnchorStyles.Top;
+
+            Label volumeLabel = new Label
+            {
+                Location = new Point(360, 240),
+                Name = "volumeLabel",
+                Size = new Size(50, 30),
+                Text = volumeBar.Value + "%",
+                Font = new Font("Arial", 12, FontStyle.Bold),
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+            volumeBar.Scroll += (s, e) => volumeLabel.Text = volumeBar.Value + "%";
 
             mainPanel.Controls.Add(ipAddressTextBox);
             mainPanel.Controls.Add(connectButton);
             mainPanel.Controls.Add(endButton);
             mainPanel.Controls.Add(myLabel);
             mainPanel.Controls.Add(volumeBar);
+            mainPanel.Controls.Add(volumeLabel);
         }
+
 
         private void ShowHistory()
         {
             mainPanel.Controls.Clear();
             ListBox historyListBox = new ListBox
             {
-                Location = new Point(200, 50),
+                Location = new Point(100, 50),
                 Name = "historyListBox",
                 Size = new Size(400, 300),
-                Font = new Font("Arial", 12)
+                Font = new Font("Arial", 12),
+                BackColor = Color.Black 
             };
 
-           
             foreach (var ip in connectionHistory)
             {
                 historyListBox.Items.Add(ip);
@@ -151,7 +161,7 @@ namespace Client
 
             Button backButton = new Button
             {
-                Location = new Point(200, 370),
+                Location = new Point(100, 370),
                 Name = "backButton",
                 Size = new Size(100, 50),
                 Text = "Back",
@@ -160,7 +170,7 @@ namespace Client
                 Font = new Font("Arial", 12, FontStyle.Bold),
                 FlatStyle = FlatStyle.Flat
             };
-            backButton.Click += (s, e) => ShowCallInterface(); 
+            backButton.Click += (s, e) => ShowCallInterface();
 
             mainPanel.Controls.Add(historyListBox);
             mainPanel.Controls.Add(backButton);
@@ -188,7 +198,6 @@ namespace Client
 
         private void StartButton_Click(object sender, EventArgs e)
         {
-            // Retrieve IP address from the text box
             string ipAddress = string.Empty;
             foreach (Control control in mainPanel.Controls)
             {
@@ -203,7 +212,6 @@ namespace Client
                 }
             }
 
-           
             if (!string.IsNullOrWhiteSpace(ipAddress) && !connectionHistory.Contains(ipAddress))
             {
                 connectionHistory.Add(ipAddress);
