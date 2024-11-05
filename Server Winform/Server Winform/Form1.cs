@@ -2,15 +2,27 @@
 using System.Drawing;
 using System.Windows.Forms;
 
+
 namespace Server
 {
     public partial class Form1 : Form
     {
+
         public Form1()
         {
             InitializeComponent();
+            InitializeAudio();
             ShowIntroduction();
         }
+
+        private void InitializeAudio()
+        {
+            waveIn = new WaveIn();
+            waveIn.WaveFormat = new WaveFormat(44100, 1);
+            waveIn.DataAvailable += WaveIn_DataAvailable;
+            waveIn.BufferMilliseconds = 50;
+        }
+
 
         private void ShowIntroduction()
         {
@@ -35,10 +47,8 @@ namespace Server
             Button connectButton = new Button
             {
                 Location = new Point(200, 50),
-                Name = "connectButton",
                 Size = new Size(100, 50),
                 Text = "Connect",
-                UseVisualStyleBackColor = true,
                 BackColor = Color.LightGreen,
                 Font = new Font("Arial", 12, FontStyle.Bold),
                 FlatStyle = FlatStyle.Flat
@@ -46,15 +56,13 @@ namespace Server
             connectButton.Anchor = AnchorStyles.Top;
             connectButton.MouseEnter += (s, e) => connectButton.BackColor = Color.Green;
             connectButton.MouseLeave += (s, e) => connectButton.BackColor = Color.LightGreen;
-            connectButton.Click += new EventHandler(this.StartButton_Click);
+            connectButton.Click += StartButton_Click;
 
             Button endButton = new Button
             {
                 Location = new Point(350, 50),
-                Name = "endButton",
                 Size = new Size(100, 50),
                 Text = "End Call",
-                UseVisualStyleBackColor = true,
                 BackColor = Color.IndianRed,
                 Font = new Font("Arial", 12, FontStyle.Bold),
                 FlatStyle = FlatStyle.Flat
@@ -62,24 +70,23 @@ namespace Server
             endButton.Anchor = AnchorStyles.Top;
             endButton.MouseEnter += (s, e) => endButton.BackColor = Color.Red;
             endButton.MouseLeave += (s, e) => endButton.BackColor = Color.IndianRed;
-            endButton.Click += new EventHandler(this.EndButton_Click);
+            endButton.Click += EndButton_Click;
 
-            Label myLabel = new Label
+            Label statusLabel = new Label
             {
-                Location = new Point(200, 120),
-                Name = "myLabel",
-                Size = new Size(250, 40),
+                Location = new Point(170, 120),
+                Name = "statusLabel",
+                Size = new Size(350, 50),
                 Text = "Status: Idle",
-                Font = new Font("Arial", 14, FontStyle.Bold),
+                Font = new Font("Arial", 12, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleCenter,
                 ForeColor = Color.White
             };
-            myLabel.Anchor = AnchorStyles.Top;
+            statusLabel.Anchor = AnchorStyles.Top;
 
             TrackBar volumeBar = new TrackBar
             {
-                Location = new Point(200, 180),
-                Name = "volumeBar",
+                Location = new Point(200, 210),
                 Size = new Size(250, 45),
                 Minimum = 0,
                 Maximum = 100,
@@ -91,7 +98,7 @@ namespace Server
 
             mainPanel.Controls.Add(connectButton);
             mainPanel.Controls.Add(endButton);
-            mainPanel.Controls.Add(myLabel);
+            mainPanel.Controls.Add(statusLabel);
             mainPanel.Controls.Add(volumeBar);
         }
 

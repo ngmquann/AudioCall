@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Server Winform",
+    "\\Server Winform\\Server Winform"
   ],
-  "SelectedNode": "\\Client.sln",
+  "SelectedNode": "\\Server Winform\\Server Winform\\Form1.cs",
   "PreviewInSolutionExplorer": false
 }
