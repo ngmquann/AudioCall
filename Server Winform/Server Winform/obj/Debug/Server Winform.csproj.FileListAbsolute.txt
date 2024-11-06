@@ -39,3 +39,34 @@ C:\Users\Admin\source\repos\AudioCall\Server Winform\Server Winform\bin\Debug\NA
 C:\Users\Admin\source\repos\AudioCall\Server Winform\Server Winform\bin\Debug\System.Security.AccessControl.xml
 C:\Users\Admin\source\repos\AudioCall\Server Winform\Server Winform\bin\Debug\System.Security.Principal.Windows.xml
 C:\Users\Admin\source\repos\AudioCall\Server Winform\Server Winform\obj\Debug\Server Winform.csproj.CopyComplete
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\Server Winform.exe.config
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\Server Winform.exe
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\Server Winform.pdb
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\Microsoft.Win32.Registry.dll
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\NAudio.Asio.dll
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\NAudio.Core.dll
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\NAudio.dll
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\NAudio.Midi.dll
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\NAudio.Wasapi.dll
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\NAudio.WinForms.dll
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\NAudio.WinMM.dll
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\System.Security.AccessControl.dll
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\System.Security.Principal.Windows.dll
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\Microsoft.Win32.Registry.xml
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\NAudio.xml
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\NAudio.Asio.xml
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\NAudio.Core.xml
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\NAudio.Midi.xml
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\NAudio.Wasapi.xml
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\NAudio.WinForms.xml
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\NAudio.WinMM.xml
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\System.Security.AccessControl.xml
+D:\audio-call\AudioCall\Server Winform\Server Winform\bin\Debug\System.Security.Principal.Windows.xml
+D:\audio-call\AudioCall\Server Winform\Server Winform\obj\Debug\Server Winform.csproj.AssemblyReference.cache
+D:\audio-call\AudioCall\Server Winform\Server Winform\obj\Debug\Server.Form1.resources
+D:\audio-call\AudioCall\Server Winform\Server Winform\obj\Debug\Server_Winform.Properties.Resources.resources
+D:\audio-call\AudioCall\Server Winform\Server Winform\obj\Debug\Server Winform.csproj.GenerateResource.cache
+D:\audio-call\AudioCall\Server Winform\Server Winform\obj\Debug\Server Winform.csproj.CoreCompileInputs.cache
+D:\audio-call\AudioCall\Server Winform\Server Winform\obj\Debug\Server W.329C15CC.Up2Date
+D:\audio-call\AudioCall\Server Winform\Server Winform\obj\Debug\Server Winform.exe
+D:\audio-call\AudioCall\Server Winform\Server Winform\obj\Debug\Server Winform.pdb

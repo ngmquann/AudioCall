@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -114,21 +115,6 @@ namespace Server
             mainPanel.Controls.Add(volumeBar);
         }
 
-        private void IntroductionButton_Click(object sender, EventArgs e)
-        {
-            ShowIntroduction();
-        }
-
-        private void CallButton_Click(object sender, EventArgs e)
-        {
-            ShowCallInterface();
-        }
-
-        private void ExitButton_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
         private async void StartButton_Click(object sender, EventArgs e)
         {
             if (!isConnected)
@@ -168,11 +154,12 @@ namespace Server
 
         private async Task StartServerAsync()
         {
+            string address = GetWifiIPv4Address();
             try
             {
                 server = new TcpListener(IPAddress.Any, 8000);
                 server.Start();
-                UpdateStatus("Waiting for incoming connection...", Color.Yellow);
+                UpdateStatus("Waiting for incoming connection... \n Address: " + address, Color.Yellow);
 
                 client = await Task.Run(() => server.AcceptTcpClient());
                 stream = client.GetStream();
@@ -186,6 +173,25 @@ namespace Server
                 throw;
             }
         }
+
+        private string GetWifiIPv4Address()
+        {
+            foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if (ni.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 && ni.OperationalStatus == OperationalStatus.Up)
+                {
+                    foreach (UnicastIPAddressInformation ip in ni.GetIPProperties().UnicastAddresses)
+                    {
+                        if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
+                        {
+                            return ip.Address.ToString();
+                        }
+                    }
+                }
+            }
+            return "No Wi-Fi IPv4 address found";
+        }
+
 
         private void SetupSuccessfulConnection()
         {
@@ -263,15 +269,69 @@ namespace Server
             });
         }
 
+        private void IntroductionButton_Click(object sender, EventArgs e)
+        {
+            ShowIntroduction();
+        }
+
+        private void CallButton_Click(object sender, EventArgs e)
+        {
+            ShowCallInterface();
+        }
+
+        private void ExitButton_Click(object sender, EventArgs e)
+        {
+            EndCall();
+            Application.Exit();
+        }
 
         private void EndButton_Click(object sender, EventArgs e)
         {
+            EndCall();
+            UpdateStatus("Call Ended", Color.Red);
+        }
+
+        private void EndCall()
+        {
+            isConnected = false;
+
+            if (waveIn != null)
+            {
+                waveIn.StopRecording();
+                waveIn.Dispose();
+                waveIn = null;
+            }
+
+            if (waveOut != null)
+            {
+                waveOut.Stop();
+                waveOut.Dispose();
+                waveOut = null;
+            }
+
+            if (stream != null)
+            {
+                stream.Close();
+                stream = null;
+            }
+
+            if (client != null)
+            {
+                client.Close();
+                client = null;
+            }
+
+            if (server != null)
+            {
+                server.Stop();
+                server = null;
+            }
+
             foreach (Control control in mainPanel.Controls)
             {
-                if (control is Label label && label.Name == "myLabel")
+                if (control is Button button)
                 {
-                    label.Text = "Status: Call Ended";
-                    label.ForeColor = Color.Red;
+                    button.Enabled = true;
                 }
             }
         }
