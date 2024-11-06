@@ -1,5 +1,9 @@
-﻿using System;
+﻿using NAudio.Wave;
+using System;
 using System.Drawing;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
@@ -7,6 +11,14 @@ namespace Server
 {
     public partial class Form1 : Form
     {
+        private WaveIn waveIn;
+        private WaveOut waveOut;
+        private BufferedWaveProvider waveProvider;
+        private TcpClient client;
+        private TcpListener server;
+        private NetworkStream stream;
+        private bool isConnected = false;
+
 
         public Form1()
         {
@@ -117,17 +129,140 @@ namespace Server
             Application.Exit();
         }
 
-        private void StartButton_Click(object sender, EventArgs e)
+        private async void StartButton_Click(object sender, EventArgs e)
         {
-            foreach (Control control in mainPanel.Controls)
+            if (!isConnected)
             {
-                if (control is Label label && label.Name == "myLabel")
+                Button connectButton = sender as Button;
+                if (connectButton != null)
+                    connectButton.Enabled = false;
+
+                UpdateStatus("Connecting...", Color.Yellow);
+
+                try
                 {
-                    label.Text = "Status: Connecting...";
-                    label.ForeColor = Color.Green;
+                    await StartServerAsync();
+                    waveIn.StartRecording();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Connection error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    UpdateStatus("Connection failed", Color.Red);
+                    if (connectButton != null)
+                        connectButton.Enabled = true;
                 }
             }
         }
+
+        private void UpdateStatus(string message, Color color)
+        {
+            foreach (Control control in mainPanel.Controls)
+            {
+                if (control is Label label && label.Name == "statusLabel")
+                {
+                    label.Text = $"Status: {message}";
+                    label.ForeColor = color;
+                }
+            }
+        }
+
+        private async Task StartServerAsync()
+        {
+            try
+            {
+                server = new TcpListener(IPAddress.Any, 8000);
+                server.Start();
+                UpdateStatus("Waiting for incoming connection...", Color.Yellow);
+
+                client = await Task.Run(() => server.AcceptTcpClient());
+                stream = client.GetStream();
+
+                SetupSuccessfulConnection();
+                UpdateStatus("Client connected! Ready for call.", Color.Green);
+            }
+            catch (Exception)
+            {
+                if (server != null) server.Stop();
+                throw;
+            }
+        }
+
+        private void SetupSuccessfulConnection()
+        {
+            isConnected = true;
+            InitializeAudioDevices();
+            StartReceivingAudio();
+        }
+
+        private void InitializeAudioDevices()
+        {
+            try
+            {
+                if (waveOut != null)
+                {
+                    waveOut.Dispose();
+                }
+
+                waveOut = new WaveOut();
+                waveProvider = new BufferedWaveProvider(new WaveFormat(44100, 1));
+                waveOut.Init(waveProvider);
+                waveOut.Play();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error initializing audio devices: {ex.Message}", "Audio Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void WaveIn_DataAvailable(object sender, WaveInEventArgs e)
+        {
+            try
+            {
+                if (stream != null && stream.CanWrite)
+                {
+                    stream.Write(e.Buffer, 0, e.BytesRecorded);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Invoke((MethodInvoker)delegate
+                {
+                    UpdateStatus($"Audio sending error: {ex.Message}", Color.Red);
+                });
+            }
+        }
+
+        private void StartReceivingAudio()
+        {
+            Task.Run(async () =>
+            {
+                byte[] buffer = new byte[4096];
+                while (isConnected && stream != null)
+                {
+                    try
+                    {
+                        int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+                        if (bytesRead > 0)
+                        {
+                            waveProvider.AddSamples(buffer, 0, bytesRead);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (isConnected)
+                        {
+                            this.Invoke((MethodInvoker)delegate
+                            {
+                                UpdateStatus($"Audio receiving error: {ex.Message}", Color.Red);
+                            });
+                        }
+                        break;
+                    }
+                }
+            });
+        }
+
 
         private void EndButton_Click(object sender, EventArgs e)
         {
