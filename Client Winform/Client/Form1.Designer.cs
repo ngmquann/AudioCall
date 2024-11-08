@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -152,7 +153,8 @@ namespace Client
 
         private void SetButtonIcons()
         {
-            string iconPath = System.IO.Path.Combine(Application.StartupPath, "icons");
+            string iconPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "icons");
+
             this.introductionButton.Image = ResizeIcon(System.IO.Path.Combine(iconPath, "intro.png"), 24, 24);
             this.callButton.Image = ResizeIcon(System.IO.Path.Combine(iconPath, "call.png"), 24, 24);
             this.historyButton.Image = ResizeIcon(System.IO.Path.Combine(iconPath, "history.png"), 24, 24);
