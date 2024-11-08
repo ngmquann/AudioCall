@@ -155,10 +155,17 @@ namespace Client
         {
             string iconPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "icons");
 
-            this.introductionButton.Image = ResizeIcon(System.IO.Path.Combine(iconPath, "intro.png"), 24, 24);
-            this.callButton.Image = ResizeIcon(System.IO.Path.Combine(iconPath, "call.png"), 24, 24);
-            this.historyButton.Image = ResizeIcon(System.IO.Path.Combine(iconPath, "history.png"), 24, 24);
-            this.exitButton.Image = ResizeIcon(System.IO.Path.Combine(iconPath, "exit.png"), 24, 24);
+            if (System.IO.File.Exists(System.IO.Path.Combine(iconPath, "intro.png")))
+                this.introductionButton.Image = ResizeIcon(System.IO.Path.Combine(iconPath, "intro.png"), 24, 24);
+
+            if (System.IO.File.Exists(System.IO.Path.Combine(iconPath, "call.png")))
+                this.callButton.Image = ResizeIcon(System.IO.Path.Combine(iconPath, "call.png"), 24, 24);
+
+            if (System.IO.File.Exists(System.IO.Path.Combine(iconPath, "history.png")))
+                this.historyButton.Image = ResizeIcon(System.IO.Path.Combine(iconPath, "history.png"), 24, 24);
+
+            if (System.IO.File.Exists(System.IO.Path.Combine(iconPath, "exit.png")))
+                this.exitButton.Image = ResizeIcon(System.IO.Path.Combine(iconPath, "exit.png"), 24, 24);
         }
     }
 }
