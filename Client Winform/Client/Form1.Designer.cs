@@ -1,5 +1,4 @@
 using System.Drawing;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 
 namespace Client
@@ -34,7 +33,9 @@ namespace Client
             this.mainPanel = new System.Windows.Forms.Panel();
             this.sidePanel.SuspendLayout();
             this.SuspendLayout();
-           
+            // 
+            // introductionButton
+            // 
             this.introductionButton.BackColor = System.Drawing.Color.White;
             this.introductionButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.introductionButton.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
@@ -49,7 +50,9 @@ namespace Client
             this.introductionButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.introductionButton.UseVisualStyleBackColor = false;
             this.introductionButton.Click += new System.EventHandler(this.IntroductionButton_Click);
-            
+            // 
+            // callButton
+            // 
             this.callButton.BackColor = System.Drawing.Color.White;
             this.callButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.callButton.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
@@ -64,7 +67,9 @@ namespace Client
             this.callButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.callButton.UseVisualStyleBackColor = false;
             this.callButton.Click += new System.EventHandler(this.CallButton_Click);
-           
+            // 
+            // exitButton
+            // 
             this.exitButton.BackColor = System.Drawing.Color.White;
             this.exitButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.exitButton.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
@@ -79,7 +84,9 @@ namespace Client
             this.exitButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.exitButton.UseVisualStyleBackColor = false;
             this.exitButton.Click += new System.EventHandler(this.ExitButton_Click);
-           
+            // 
+            // historyButton
+            // 
             this.historyButton.BackColor = System.Drawing.Color.White;
             this.historyButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.historyButton.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
@@ -94,7 +101,9 @@ namespace Client
             this.historyButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.historyButton.UseVisualStyleBackColor = false;
             this.historyButton.Click += new System.EventHandler(this.HistoryButton_Click);
-            
+            // 
+            // sidePanel
+            // 
             this.sidePanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(102)))), ((int)(((byte)(204)))));
             this.sidePanel.Controls.Add(this.introductionButton);
             this.sidePanel.Controls.Add(this.callButton);
@@ -106,7 +115,9 @@ namespace Client
             this.sidePanel.Name = "sidePanel";
             this.sidePanel.Size = new System.Drawing.Size(272, 603);
             this.sidePanel.TabIndex = 1;
-           
+            // 
+            // mainPanel
+            // 
             this.mainPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(54)))), ((int)(((byte)(64)))));
             this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainPanel.Location = new System.Drawing.Point(272, 0);
@@ -114,7 +125,9 @@ namespace Client
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Size = new System.Drawing.Size(711, 603);
             this.mainPanel.TabIndex = 0;
-           
+            // 
+            // Form1
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
@@ -126,7 +139,6 @@ namespace Client
             this.Text = "Audio Call Control - Client";
             this.sidePanel.ResumeLayout(false);
             this.ResumeLayout(false);
-
             SetButtonIcons();
         }
 
