@@ -1,4 +1,4 @@
-﻿using NAudio.Wave;
+using NAudio.Wave;
 using System;
 using System.Drawing;
 using System.Net;
@@ -59,9 +59,11 @@ namespace Server
 
             Button connectButton = new Button
             {
-                Location = new Point(200, 50),
+                Location = new Point(100, 100),
+                Name = "connectButton",
                 Size = new Size(100, 50),
                 Text = "Connect",
+                UseVisualStyleBackColor = true,
                 BackColor = Color.LightGreen,
                 Font = new Font("Arial", 12, FontStyle.Bold),
                 FlatStyle = FlatStyle.Flat
@@ -73,12 +75,15 @@ namespace Server
 
             Button endButton = new Button
             {
-                Location = new Point(350, 50),
+                Location = new Point(250, 100),
+                Name = "endButton",
                 Size = new Size(100, 50),
                 Text = "End Call",
+                UseVisualStyleBackColor = true,
                 BackColor = Color.IndianRed,
                 Font = new Font("Arial", 12, FontStyle.Bold),
-                FlatStyle = FlatStyle.Flat
+                FlatStyle = FlatStyle.Flat,
+                Enabled = false
             };
             endButton.Anchor = AnchorStyles.Top;
             endButton.MouseEnter += (s, e) => endButton.BackColor = Color.Red;
@@ -87,11 +92,11 @@ namespace Server
 
             Label statusLabel = new Label
             {
-                Location = new Point(170, 120),
+                Location = new Point(100, 180),
                 Name = "statusLabel",
-                Size = new Size(350, 50),
+                Size = new Size(250, 40),
                 Text = "Status: Idle",
-                Font = new Font("Arial", 12, FontStyle.Bold),
+                Font = new Font("Arial", 14, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleCenter,
                 ForeColor = Color.White
             };
@@ -99,22 +104,44 @@ namespace Server
 
             TrackBar volumeBar = new TrackBar
             {
-                Location = new Point(200, 210),
+                Location = new Point(100, 240),
+                Name = "volumeBar",
                 Size = new Size(250, 45),
                 Minimum = 0,
                 Maximum = 100,
                 Value = 50,
                 TickFrequency = 10,
-                BackColor = Color.Black
+                BackColor = Color.FromArgb(47, 54, 64)
             };
             volumeBar.Anchor = AnchorStyles.Top;
 
+            Label volumeLabel = new Label
+            {
+                Location = new Point(360, 240),
+                Name = "volumeLabel",
+                Size = new Size(50, 30),
+                Text = volumeBar.Value + "%",
+                Font = new Font("Arial", 12, FontStyle.Bold),
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+
+            volumeBar.ValueChanged += (s, e) =>
+            {
+                volumeLabel.Text = volumeBar.Value + "%";
+                if (waveOut != null)
+                {
+                    waveOut.Volume = volumeBar.Value / 100f;
+                }
+            };
+
+            
             mainPanel.Controls.Add(connectButton);
             mainPanel.Controls.Add(endButton);
             mainPanel.Controls.Add(statusLabel);
             mainPanel.Controls.Add(volumeBar);
+            mainPanel.Controls.Add(volumeLabel);
         }
-
         private async void StartButton_Click(object sender, EventArgs e)
         {
             if (!isConnected)
