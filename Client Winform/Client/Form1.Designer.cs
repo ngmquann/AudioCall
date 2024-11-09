@@ -2,7 +2,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Server
+namespace Client
 {
     partial class Form1
     {
@@ -101,7 +101,7 @@ namespace Server
             this.historyButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.historyButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.historyButton.UseVisualStyleBackColor = false;
-            
+            this.historyButton.Click += new System.EventHandler(this.HistoryButton_Click);
             // 
             // sidePanel
             // 
@@ -137,7 +137,7 @@ namespace Server
             this.Controls.Add(this.sidePanel);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form1";
-            this.Text = "Audio Call Control - Server";
+            this.Text = "Audio Call Control - Client";
             this.sidePanel.ResumeLayout(false);
             this.ResumeLayout(false);
             SetButtonIcons();
