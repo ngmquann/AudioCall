@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -19,7 +20,8 @@ namespace Server
         private TcpListener server;
         private NetworkStream stream;
         private bool isConnected = false;
-
+        private bool isMicMuted = false;
+        private CancellationTokenSource cancellationTokenSource;
 
         public Form1()
         {
@@ -90,13 +92,28 @@ namespace Server
             endButton.MouseLeave += (s, e) => endButton.BackColor = Color.IndianRed;
             endButton.Click += EndButton_Click;
 
+            Button muteButton = new Button
+            {
+                Location = new Point(175, 170),
+                Name = "muteButton",
+                Size = new Size(100, 40),
+                Text = "Mute Mic",
+                UseVisualStyleBackColor = true,
+                BackColor = Color.LightGray,
+                Font = new Font("Arial", 12, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat,
+                Enabled = false
+            };
+            muteButton.Anchor = AnchorStyles.Top;
+            muteButton.Click += MuteButton_Click;
+
             Label statusLabel = new Label
             {
-                Location = new Point(100, 180),
+                Location = new Point(50, 230),
                 Name = "statusLabel",
-                Size = new Size(250, 40),
+                Size = new Size(360, 70),
                 Text = "Status: Idle",
-                Font = new Font("Arial", 14, FontStyle.Bold),
+                Font = new Font("Arial", 13, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleCenter,
                 ForeColor = Color.White
             };
@@ -104,7 +121,7 @@ namespace Server
 
             TrackBar volumeBar = new TrackBar
             {
-                Location = new Point(100, 240),
+                Location = new Point(100, 310),
                 Name = "volumeBar",
                 Size = new Size(250, 45),
                 Minimum = 0,
@@ -117,7 +134,7 @@ namespace Server
 
             Label volumeLabel = new Label
             {
-                Location = new Point(360, 240),
+                Location = new Point(360, 310),
                 Name = "volumeLabel",
                 Size = new Size(50, 30),
                 Text = volumeBar.Value + "%",
@@ -138,18 +155,64 @@ namespace Server
             
             mainPanel.Controls.Add(connectButton);
             mainPanel.Controls.Add(endButton);
+            mainPanel.Controls.Add(muteButton);
             mainPanel.Controls.Add(statusLabel);
             mainPanel.Controls.Add(volumeBar);
             mainPanel.Controls.Add(volumeLabel);
         }
+
+        private void UpdateButtonStates(bool isConnected)
+        {
+            foreach (Control control in mainPanel.Controls)
+            {
+                if (control is Button button)
+                {
+                    switch (button.Name)
+                    {
+                        case "connectButton":
+                            button.Enabled = !isConnected;
+                            break;
+                        case "muteButton":
+                            button.Enabled = isConnected;
+                            if (!isConnected)
+                            {
+                                button.Text = "Mute Mic";
+                                button.BackColor = Color.LightGray;
+                            }
+                            break;
+                        case "endButton":
+                            button.Enabled = isConnected;
+                            break;
+                    }
+                }
+            }
+        }
+
+
+        private void MuteButton_Click(object sender, EventArgs e)
+        {
+            Button muteButton = sender as Button;
+            isMicMuted = !isMicMuted;
+
+            if (isMicMuted)
+            {
+                muteButton.Text = "Unmute Mic";
+                muteButton.BackColor = Color.Orange;
+                waveIn?.StopRecording();
+            }
+            else
+            {
+                muteButton.Text = "Mute Mic";
+                muteButton.BackColor = Color.LightGray;
+                waveIn?.StartRecording();
+            }
+        }
+
         private async void StartButton_Click(object sender, EventArgs e)
         {
             if (!isConnected)
             {
-                Button connectButton = sender as Button;
-                if (connectButton != null)
-                    connectButton.Enabled = false;
-
+                UpdateButtonStates(true);
                 UpdateStatus("Connecting...", Color.Yellow);
 
                 try
@@ -161,8 +224,7 @@ namespace Server
                 {
                     MessageBox.Show($"Connection error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     UpdateStatus("Connection failed", Color.Red);
-                    if (connectButton != null)
-                        connectButton.Enabled = true;
+                    UpdateButtonStates(false);
                 }
             }
         }
@@ -176,28 +238,6 @@ namespace Server
                     label.Text = $"Status: {message}";
                     label.ForeColor = color;
                 }
-            }
-        }
-
-        private async Task StartServerAsync()
-        {
-            string address = GetWifiIPv4Address();
-            try
-            {
-                server = new TcpListener(IPAddress.Any, 8000);
-                server.Start();
-                UpdateStatus("Waiting for incoming connection... \n Address: " + address, Color.Yellow);
-
-                client = await Task.Run(() => server.AcceptTcpClient());
-                stream = client.GetStream();
-
-                SetupSuccessfulConnection();
-                UpdateStatus("Client connected! Ready for call.", Color.Green);
-            }
-            catch (Exception)
-            {
-                if (server != null) server.Stop();
-                throw;
             }
         }
 
@@ -248,26 +288,10 @@ namespace Server
             }
         }
 
-        private void WaveIn_DataAvailable(object sender, WaveInEventArgs e)
-        {
-            try
-            {
-                if (stream != null && stream.CanWrite)
-                {
-                    stream.Write(e.Buffer, 0, e.BytesRecorded);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.Invoke((MethodInvoker)delegate
-                {
-                    UpdateStatus($"Audio sending error: {ex.Message}", Color.Red);
-                });
-            }
-        }
-
         private void StartReceivingAudio()
         {
+            cancellationTokenSource = new CancellationTokenSource();
+
             Task.Run(async () =>
             {
                 byte[] buffer = new byte[4096];
@@ -275,11 +299,18 @@ namespace Server
                 {
                     try
                     {
-                        int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+                        if (cancellationTokenSource.Token.IsCancellationRequested)
+                            break;
+
+                        int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationTokenSource.Token);
                         if (bytesRead > 0)
                         {
-                            waveProvider.AddSamples(buffer, 0, bytesRead);
+                            waveProvider?.AddSamples(buffer, 0, bytesRead);
                         }
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        break;
                     }
                     catch (Exception ex)
                     {
@@ -293,7 +324,28 @@ namespace Server
                         break;
                     }
                 }
-            });
+            }, cancellationTokenSource.Token);
+        }
+
+        private void WaveIn_DataAvailable(object sender, WaveInEventArgs e)
+        {
+            try
+            {
+                if (stream != null && stream.CanWrite && !isMicMuted)
+                {
+                    stream.Write(e.Buffer, 0, e.BytesRecorded);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (isConnected)
+                {
+                    this.Invoke((MethodInvoker)delegate
+                    {
+                        UpdateStatus($"Audio sending error: {ex.Message}", Color.Red);
+                    });
+                }
+            }
         }
 
         private void IntroductionButton_Click(object sender, EventArgs e)
@@ -315,52 +367,111 @@ namespace Server
         private void EndButton_Click(object sender, EventArgs e)
         {
             EndCall();
-            UpdateStatus("Call Ended", Color.Red);
         }
 
         private void EndCall()
         {
-            isConnected = false;
+            if (!isConnected && client == null && server == null)
+                return;
 
-            if (waveIn != null)
-            {
-                waveIn.StopRecording();
-                waveIn.Dispose();
-                waveIn = null;
-            }
+            isConnected = false;    
+            isMicMuted = false;
 
-            if (waveOut != null)
+            try
             {
-                waveOut.Stop();
-                waveOut.Dispose();
-                waveOut = null;
-            }
+                cancellationTokenSource?.Cancel();
 
-            if (stream != null)
-            {
-                stream.Close();
-                stream = null;
-            }
-
-            if (client != null)
-            {
-                client.Close();
-                client = null;
-            }
-
-            if (server != null)
-            {
-                server.Stop();
-                server = null;
-            }
-
-            foreach (Control control in mainPanel.Controls)
-            {
-                if (control is Button button)
+                if (waveIn != null)
                 {
-                    button.Enabled = true;
+                    waveIn.StopRecording();
+                    waveIn.Dispose();
+                    waveIn = null;
+                }
+
+                if (waveOut != null)
+                {
+                    waveOut.Stop();
+                    waveOut.Dispose();
+                    waveOut = null;
+                }
+                Thread.Sleep(100);
+                if (stream != null)
+                {
+                    stream.Close();
+                    stream = null;
+                }
+
+                if (client != null)
+                {
+                    client.Close();
+                    client = null;
+                }
+
+                if (server != null)
+                {
+                    server.Stop();
+                    server = null;
+                }
+                cancellationTokenSource?.Dispose();
+                cancellationTokenSource = null;
+                InitializeAudio();
+                UpdateButtonStates(false);
+                UpdateStatus("Call ended", Color.Red);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error during call termination: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task StartServerAsync()
+        {
+            string address = GetWifiIPv4Address();
+            try
+            {
+                server = new TcpListener(IPAddress.Any, 8000);
+                server.Start();
+                UpdateStatus("Waiting for incoming connection... \n Address: " + address, Color.Yellow);
+
+                using (var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5)))
+                {
+                    try
+                    {
+                        client = await server.AcceptTcpClientAsync();
+                        stream = client.GetStream();
+                        SetupSuccessfulConnection();
+                        UpdateStatus("Client connected! Ready for call.", Color.Green);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        throw new TimeoutException("Connection attempt timed out");
+                    }
                 }
             }
+            catch (Exception)
+            {
+                try
+                {
+                    if (server != null)
+                    {
+                        server.Stop();
+                        server = null;
+                    }
+                }
+                catch { }
+                throw;
+            }
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            try
+            {
+                EndCall();
+            }
+            catch { }
+            base.OnFormClosing(e);
         }
     }
 }
