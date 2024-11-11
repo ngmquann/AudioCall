@@ -1,5 +1,6 @@
 using NAudio.Wave;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -22,10 +23,12 @@ namespace Server
         private bool isConnected = false;
         private bool isMicMuted = false;
         private CancellationTokenSource cancellationTokenSource;
+        private List<string> connectionHistory;
 
         public Form1()
         {
             InitializeComponent();
+            connectionHistory = new List<string>();
             InitializeAudio();
             ShowIntroduction();
         }
@@ -161,6 +164,102 @@ namespace Server
             mainPanel.Controls.Add(volumeLabel);
         }
 
+        private void AddToConnectionHistory(TcpClient client)
+        {
+            if (client?.Client?.RemoteEndPoint != null)
+            {
+                string clientAddress = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
+                string connectionInfo = $"{clientAddress} - {DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}";
+
+                // Add to history if it's not already there
+                if (!connectionHistory.Contains(connectionInfo))
+                {
+                    connectionHistory.Add(connectionInfo);
+                }
+
+                // Keep only the last 10 connections
+                if (connectionHistory.Count > 10)
+                {
+                    connectionHistory.RemoveAt(0);
+                }
+            }
+        }
+
+        private void ShowHistory()
+        {
+            mainPanel.Controls.Clear();
+
+            // Create title label
+            Label titleLabel = new Label
+            {
+                Text = "Connection History",
+                Location = new Point(50, 20),
+                Size = new Size(500, 30),
+                Font = new Font("Arial", 16, FontStyle.Bold),
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+
+            // Create history list box
+            ListBox historyListBox = new ListBox
+            {
+                Location = new Point(50, 60),
+                Size = new Size(500, 300),
+                Font = new Font("Arial", 12),
+                BackColor = Color.FromArgb(47, 54, 64),
+                ForeColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+
+            // Add items to history list box
+            if (connectionHistory.Count == 0)
+            {
+                historyListBox.Items.Add("No connection history available");
+            }
+            else
+            {
+                foreach (string connection in connectionHistory)
+                {
+                    historyListBox.Items.Add(connection);
+                }
+            }
+
+            // Create clear history button
+            Button clearButton = new Button
+            {
+                Text = "Clear History",
+                Location = new Point(50, 370),
+                Size = new Size(150, 40),
+                Font = new Font("Arial", 12, FontStyle.Bold),
+                BackColor = Color.IndianRed,
+                FlatStyle = FlatStyle.Flat
+            };
+            clearButton.Click += (s, e) =>
+            {
+                connectionHistory.Clear();
+                historyListBox.Items.Clear();
+                historyListBox.Items.Add("No connection history available");
+            };
+
+            // Create back button
+            Button backButton = new Button
+            {
+                Text = "Back",
+                Location = new Point(400, 370),
+                Size = new Size(150, 40),
+                Font = new Font("Arial", 12, FontStyle.Bold),
+                BackColor = Color.LightGray,
+                FlatStyle = FlatStyle.Flat
+            };
+            backButton.Click += (s, e) => ShowCallInterface();
+
+            // Add all controls to main panel
+            mainPanel.Controls.Add(titleLabel);
+            mainPanel.Controls.Add(historyListBox);
+            mainPanel.Controls.Add(clearButton);
+            mainPanel.Controls.Add(backButton);
+        }
+
         private void UpdateButtonStates(bool isConnected)
         {
             foreach (Control control in mainPanel.Controls)
@@ -263,6 +362,7 @@ namespace Server
         private void SetupSuccessfulConnection()
         {
             isConnected = true;
+            AddToConnectionHistory(client);
             InitializeAudioDevices();
             StartReceivingAudio();
         }
@@ -367,6 +467,11 @@ namespace Server
         private void EndButton_Click(object sender, EventArgs e)
         {
             EndCall();
+        }
+
+        private void HistoryButton_Click(object sender, EventArgs e)
+        {
+            ShowHistory();
         }
 
         private void EndCall()

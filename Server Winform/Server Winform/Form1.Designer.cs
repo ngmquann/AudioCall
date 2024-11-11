@@ -101,7 +101,7 @@ namespace Server
             this.historyButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.historyButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.historyButton.UseVisualStyleBackColor = false;
-            
+            this.historyButton.Click += new System.EventHandler(this.HistoryButton_Click);
             // 
             // sidePanel
             // 

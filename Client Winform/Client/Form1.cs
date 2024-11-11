@@ -19,6 +19,7 @@ namespace Client
         private bool isServer;
         private bool isConnected = false;
         private List<string> connectionHistory;
+        private bool isMicMuted = false;
 
         public Form1()
         {
@@ -162,46 +163,133 @@ namespace Client
                 }
             };
 
+            Button muteButton = new Button
+            {
+                Location = new Point(355, 170),
+                Name = "muteButton",
+                Size = new Size(100, 40),
+                Text = "Mute Mic",
+                UseVisualStyleBackColor = true,
+                BackColor = Color.LightGray,
+                Font = new Font("Arial", 12, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat,
+                Enabled = false
+            };
+            muteButton.Anchor = AnchorStyles.Top;
+            muteButton.Click += MuteButton_Click;
+
             mainPanel.Controls.Add(ipAddressTextBox);
             mainPanel.Controls.Add(connectButton);
             mainPanel.Controls.Add(endButton);
+            mainPanel.Controls.Add(muteButton);
             mainPanel.Controls.Add(statusLabel);
             mainPanel.Controls.Add(volumeBar);
             mainPanel.Controls.Add(volumeLabel);
         }
 
+        private void MuteButton_Click(object sender, EventArgs e)
+        {
+            Button muteButton = sender as Button;
+            isMicMuted = !isMicMuted;
+
+            if (isMicMuted)
+            {
+                muteButton.Text = "Unmute Mic";
+                muteButton.BackColor = Color.Orange;
+                waveIn?.StopRecording();
+            }
+            else
+            {
+                muteButton.Text = "Mute Mic";
+                muteButton.BackColor = Color.LightGray;
+                waveIn?.StartRecording();
+            }
+        }
+
+        private void AddToConnectionHistory(string serverIP)
+        {
+            if (!string.IsNullOrWhiteSpace(serverIP))
+            {
+                string connectionInfo = $"{serverIP} - {DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}";
+
+                if (!connectionHistory.Contains(connectionInfo))
+                {
+                    connectionHistory.Add(connectionInfo);
+                }
+
+                if (connectionHistory.Count > 10)
+                {
+                    connectionHistory.RemoveAt(0);
+                }
+            }
+        }
+
         private void ShowHistory()
         {
             mainPanel.Controls.Clear();
-            ListBox historyListBox = new ListBox
+
+            Label titleLabel = new Label
             {
-                Location = new Point(100, 50),
-                Name = "historyListBox",
-                Size = new Size(400, 300),
-                Font = new Font("Arial", 12),
-                BackColor = Color.FromArgb(47, 54, 64),
-                ForeColor = Color.White
+                Text = "Connection History",
+                Location = new Point(50, 20),
+                Size = new Size(500, 30),
+                Font = new Font("Arial", 16, FontStyle.Bold),
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleCenter
             };
 
-            foreach (var ip in connectionHistory)
+            ListBox historyListBox = new ListBox
             {
-                historyListBox.Items.Add(ip);
+                Location = new Point(50, 60),
+                Size = new Size(500, 300),
+                Font = new Font("Arial", 12),
+                BackColor = Color.FromArgb(47, 54, 64),
+                ForeColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+
+            if (connectionHistory.Count == 0)
+            {
+                historyListBox.Items.Add("No connection history available");
             }
+            else
+            {
+                foreach (string connection in connectionHistory)
+                {
+                    historyListBox.Items.Add(connection);
+                }
+            }
+
+            Button clearButton = new Button
+            {
+                Text = "Clear History",
+                Location = new Point(50, 370),
+                Size = new Size(150, 40),
+                Font = new Font("Arial", 12, FontStyle.Bold),
+                BackColor = Color.IndianRed,
+                FlatStyle = FlatStyle.Flat
+            };
+            clearButton.Click += (s, e) =>
+            {
+                connectionHistory.Clear();
+                historyListBox.Items.Clear();
+                historyListBox.Items.Add("No connection history available");
+            };
 
             Button backButton = new Button
             {
-                Location = new Point(100, 370),
-                Name = "backButton",
-                Size = new Size(100, 50),
                 Text = "Back",
-                UseVisualStyleBackColor = true,
-                BackColor = Color.LightGray,
+                Location = new Point(400, 370),
+                Size = new Size(150, 40),
                 Font = new Font("Arial", 12, FontStyle.Bold),
+                BackColor = Color.LightGray,
                 FlatStyle = FlatStyle.Flat
             };
             backButton.Click += (s, e) => ShowCallInterface();
 
+            mainPanel.Controls.Add(titleLabel);
             mainPanel.Controls.Add(historyListBox);
+            mainPanel.Controls.Add(clearButton);
             mainPanel.Controls.Add(backButton);
         }
 
@@ -220,12 +308,9 @@ namespace Client
 
                 try
                 {
-                    await StartClientAsync(ipAddressTextBox.Text);
-                    if (!string.IsNullOrWhiteSpace(ipAddressTextBox.Text) &&
-                        !connectionHistory.Contains(ipAddressTextBox.Text))
-                    {
-                        connectionHistory.Add(ipAddressTextBox.Text);
-                    }
+                    string serverIP = ipAddressTextBox.Text;
+                    await StartClientAsync(serverIP);
+                    AddToConnectionHistory(serverIP);
                     waveIn.StartRecording();
                     endButton.Enabled = true;
                 }
@@ -270,11 +355,15 @@ namespace Client
         {
             isConnected = true;
             var ipAddressTextBox = mainPanel.Controls.Find("ipAddressTextBox", false)[0] as TextBox;
+            var muteButton = mainPanel.Controls.Find("muteButton", false)[0] as Button;
+
             ipAddressTextBox.Enabled = false;
+            muteButton.Enabled = true;
 
             InitializeAudioDevices();
             StartReceivingAudio();
         }
+
 
         private void InitializeAudioDevices()
         {
@@ -299,7 +388,7 @@ namespace Client
         {
             try
             {
-                if (stream != null && stream.CanWrite)
+                if (stream != null && stream.CanWrite && !isMicMuted)
                 {
                     stream.Write(e.Buffer, 0, e.BytesRecorded);
                 }
@@ -355,6 +444,7 @@ namespace Client
         private void EndCall()
         {
             isConnected = false;
+            isMicMuted = false;
 
             if (waveIn != null)
             {
@@ -392,10 +482,14 @@ namespace Client
             var endButton = mainPanel.Controls.Find("endButton", false)[0] as Button;
             var ipAddressTextBox = mainPanel.Controls.Find("ipAddressTextBox", false)[0] as TextBox;
             var statusLabel = mainPanel.Controls.Find("statusLabel", false)[0] as Label;
+            var muteButton = mainPanel.Controls.Find("muteButton", false)[0] as Button;
 
             connectButton.Enabled = true;
             endButton.Enabled = false;
             ipAddressTextBox.Enabled = true;
+            muteButton.Enabled = false;  
+            muteButton.Text = "Mute Mic"; 
+            muteButton.BackColor = Color.LightGray; 
             statusLabel.Text = "Status: Disconnected";
             statusLabel.ForeColor = Color.White;
         }
