@@ -1,32 +1,73 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.Wave;
+using System.Linq;
+using System.Globalization;
 
 namespace Client
 {
     public partial class Form1 : Form
     {
+        private const string HISTORY_FILE_PATH = "connection_history.txt";
         private WaveIn waveIn;
         private WaveOut waveOut;
         private BufferedWaveProvider waveProvider;
         private TcpClient client;
         private TcpListener server;
         private NetworkStream stream;
-        private bool isServer;
         private bool isConnected = false;
+        private bool isServer = false;
         private List<string> connectionHistory;
         private bool isMicMuted = false;
+        private CancellationTokenSource cancellationTokenSource;
 
         public Form1()
         {
             InitializeComponent();
             connectionHistory = new List<string>();
+            LoadConnectionHistory();
             InitializeAudio();
             ShowIntroduction();
+        }
+
+        private void LoadConnectionHistory()
+        {
+            connectionHistory.Clear();
+
+            try
+            {
+                if (File.Exists(HISTORY_FILE_PATH))
+                {
+                    var lines = File.ReadAllLines(HISTORY_FILE_PATH);
+                    connectionHistory.AddRange(lines);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading connection history: {ex.Message}",
+                    "Load History Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void SaveConnectionHistory()
+        {
+            try
+            {
+                File.WriteAllLines(HISTORY_FILE_PATH, connectionHistory);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving connection history: {ex.Message}",
+                    "Save History Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void InitializeAudio()
@@ -57,19 +98,45 @@ namespace Client
         {
             mainPanel.Controls.Clear();
 
+            GroupBox modeGroup = new GroupBox
+            {
+                Text = "Connection Mode",
+                Location = new Point(50, 20),
+                Size = new Size(400, 60),
+                ForeColor = Color.White
+            };
+
+            RadioButton hostRadio = new RadioButton
+            {
+                Text = "Host Call",
+                Location = new Point(20, 25),
+                ForeColor = Color.White,
+                Checked = false
+            };
+
+            RadioButton clientRadio = new RadioButton
+            {
+                Text = "Join Call",
+                Location = new Point(200, 25),
+                ForeColor = Color.White,
+                Checked = true
+            };
+
+            modeGroup.Controls.AddRange(new Control[] { hostRadio, clientRadio });
+
             TextBox ipAddressTextBox = new TextBox
             {
-                Location = new Point(100, 50),
+                Location = new Point(50, 100),
                 Name = "ipAddressTextBox",
-                Size = new Size(250, 30),
+                Size = new Size(400, 30),
                 Font = new Font("Arial", 12),
                 ForeColor = Color.Gray,
-                Text = "Nhập địa chỉ IP của Server"
+                Text = "Enter IP address to connect"
             };
 
             ipAddressTextBox.GotFocus += (s, e) =>
             {
-                if (ipAddressTextBox.Text == "Nhập địa chỉ IP của Server")
+                if (ipAddressTextBox.Text == "Enter IP address to connect")
                 {
                     ipAddressTextBox.Text = "";
                     ipAddressTextBox.ForeColor = Color.Black;
@@ -80,112 +147,195 @@ namespace Client
             {
                 if (string.IsNullOrWhiteSpace(ipAddressTextBox.Text))
                 {
-                    ipAddressTextBox.Text = "Nhập địa chỉ IP của Server";
+                    ipAddressTextBox.Text = "Enter IP address to connect";
                     ipAddressTextBox.ForeColor = Color.Gray;
                 }
             };
 
             Button connectButton = new Button
             {
-                Location = new Point(100, 100),
+                Location = new Point(50, 150),
                 Name = "connectButton",
-                Size = new Size(100, 50),
+                Size = new Size(120, 50),
                 Text = "Connect",
-                UseVisualStyleBackColor = true,
                 BackColor = Color.LightGreen,
                 Font = new Font("Arial", 12, FontStyle.Bold),
                 FlatStyle = FlatStyle.Flat
             };
-            connectButton.Anchor = AnchorStyles.Top;
-            connectButton.MouseEnter += (s, e) => connectButton.BackColor = Color.Green;
-            connectButton.MouseLeave += (s, e) => connectButton.BackColor = Color.LightGreen;
-            connectButton.Click += new EventHandler(this.ConnectButton_Click);
 
             Button endButton = new Button
             {
-                Location = new Point(250, 100),
+                Location = new Point(190, 150),
                 Name = "endButton",
-                Size = new Size(100, 50),
+                Size = new Size(120, 50),
                 Text = "End Call",
-                UseVisualStyleBackColor = true,
                 BackColor = Color.IndianRed,
+                Enabled = false,
                 Font = new Font("Arial", 12, FontStyle.Bold),
-                FlatStyle = FlatStyle.Flat,
-                Enabled = false
+                FlatStyle = FlatStyle.Flat
             };
-            endButton.Anchor = AnchorStyles.Top;
-            endButton.MouseEnter += (s, e) => endButton.BackColor = Color.Red;
-            endButton.MouseLeave += (s, e) => endButton.BackColor = Color.IndianRed;
-            endButton.Click += new EventHandler(this.EndButton_Click);
+
+            Button muteButton = new Button
+            {
+                Location = new Point(330, 150),
+                Name = "muteButton",
+                Size = new Size(120, 50),
+                Text = "Mute Mic",
+                BackColor = Color.LightGray,
+                Enabled = false,
+                Font = new Font("Arial", 12, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat
+            };
 
             Label statusLabel = new Label
             {
-                Location = new Point(100, 180),
+                Location = new Point(50, 220),
                 Name = "statusLabel",
-                Size = new Size(250, 40),
-                Text = "Status: Idle",
-                Font = new Font("Arial", 14, FontStyle.Bold),
-                TextAlign = ContentAlignment.MiddleCenter,
+                Size = new Size(400, 60),
+                Text = "Status: Ready",
+                Font = new Font("Arial", 12, FontStyle.Bold),
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+
+            Label volumeTitle = new Label
+            {
+                Location = new Point(50, 290),
+                Text = "Volume:",
+                Size = new Size(70, 30),
+                Font = new Font("Arial", 12),
                 ForeColor = Color.White
             };
-            statusLabel.Anchor = AnchorStyles.Top;
 
             TrackBar volumeBar = new TrackBar
             {
-                Location = new Point(100, 240),
+                Location = new Point(120, 290),
                 Name = "volumeBar",
                 Size = new Size(250, 45),
                 Minimum = 0,
                 Maximum = 100,
                 Value = 50,
-                TickFrequency = 10,
-                BackColor = Color.FromArgb(47, 54, 64)
+                TickFrequency = 10
             };
-            volumeBar.Anchor = AnchorStyles.Top;
 
             Label volumeLabel = new Label
             {
-                Location = new Point(360, 240),
+                Location = new Point(380, 290),
                 Name = "volumeLabel",
                 Size = new Size(50, 30),
-                Text = volumeBar.Value + "%",
-                Font = new Font("Arial", 12, FontStyle.Bold),
-                ForeColor = Color.White,
-                TextAlign = ContentAlignment.MiddleLeft
+                Text = "50%",
+                Font = new Font("Arial", 12),
+                ForeColor = Color.White
+            };
+
+            hostRadio.CheckedChanged += (s, e) =>
+            {
+                isServer = hostRadio.Checked;
+                ipAddressTextBox.Enabled = !hostRadio.Checked;
+                if (hostRadio.Checked)
+                {
+                    ipAddressTextBox.Text = GetWifiIPv4Address();
+                    ipAddressTextBox.ForeColor = Color.Gray;
+                }
+                connectButton.Text = hostRadio.Checked ? "Start Hosting" : "Connect";
             };
 
             volumeBar.ValueChanged += (s, e) =>
             {
-                volumeLabel.Text = volumeBar.Value + "%";
+                volumeLabel.Text = $"{volumeBar.Value}%";
                 if (waveOut != null)
-                {
                     waveOut.Volume = volumeBar.Value / 100f;
-                }
             };
 
-            Button muteButton = new Button
+            connectButton.Click += async (s, e) =>
             {
-                Location = new Point(355, 170),
-                Name = "muteButton",
-                Size = new Size(100, 40),
-                Text = "Mute Mic",
-                UseVisualStyleBackColor = true,
-                BackColor = Color.LightGray,
-                Font = new Font("Arial", 12, FontStyle.Bold),
-                FlatStyle = FlatStyle.Flat,
-                Enabled = false
+                if (isServer)
+                    await StartHosting();
+                else
+                    await StartClient(ipAddressTextBox.Text);
             };
-            muteButton.Anchor = AnchorStyles.Top;
+
+            endButton.Click += EndCall;
             muteButton.Click += MuteButton_Click;
 
-            mainPanel.Controls.Add(ipAddressTextBox);
-            mainPanel.Controls.Add(connectButton);
-            mainPanel.Controls.Add(endButton);
-            mainPanel.Controls.Add(muteButton);
-            mainPanel.Controls.Add(statusLabel);
-            mainPanel.Controls.Add(volumeBar);
-            mainPanel.Controls.Add(volumeLabel);
+            mainPanel.Controls.AddRange(new Control[] {
+                modeGroup, ipAddressTextBox, connectButton, endButton,
+                muteButton, statusLabel, volumeTitle, volumeBar, volumeLabel
+            });
         }
+
+        private string GetWifiIPv4Address()
+        {
+            foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if (ni.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 && ni.OperationalStatus == OperationalStatus.Up)
+                {
+                    foreach (UnicastIPAddressInformation ip in ni.GetIPProperties().UnicastAddresses)
+                    {
+                        if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
+                        {
+                            return ip.Address.ToString();
+                        }
+                    }
+                }
+            }
+            return "No Wi-Fi IPv4 address found";
+        }
+
+        private async Task StartHosting()
+        {
+            try
+            {
+                UpdateStatus("Starting host...", Color.Yellow);
+                server = new TcpListener(IPAddress.Any, 8000);
+                server.Start();
+                UpdateStatus($"Waiting for connection on {GetWifiIPv4Address()}:8000", Color.Yellow);
+
+                using (var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5)))
+                {
+                    client = await server.AcceptTcpClientAsync();
+                    stream = client.GetStream();
+                    SetupSuccessfulConnection();
+                    UpdateStatus("Client connected! Call in progress.", Color.Green);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Hosting error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UpdateStatus("Hosting failed", Color.Red);
+                ResetConnection();
+            }
+        }
+
+        private async Task StartClient(string serverIP)
+        {
+            try
+            {
+                UpdateStatus("Connecting...", Color.Yellow);
+                client = new TcpClient();
+                await client.ConnectAsync(serverIP, 8000);
+                stream = client.GetStream();
+                SetupSuccessfulConnection();
+                AddToConnectionHistory(serverIP);
+                UpdateStatus("Connected! Call in progress.", Color.Green);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Connection error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UpdateStatus("Connection failed", Color.Red);
+                ResetConnection();
+            }
+        }
+
+        private void SetupSuccessfulConnection()
+        {
+            isConnected = true;
+            UpdateButtonStates(true);
+            InitializeAudioDevices();
+            StartReceivingAudio();
+            waveIn?.StartRecording();
+        }
+
 
         private void MuteButton_Click(object sender, EventArgs e)
         {
@@ -206,21 +356,145 @@ namespace Client
             }
         }
 
+        private void StartReceivingAudio()
+        {
+            cancellationTokenSource = new CancellationTokenSource();
+
+            Task.Run(async () =>
+            {
+                byte[] buffer = new byte[4096];
+                while (isConnected && stream != null)
+                {
+                    try
+                    {
+                        if (cancellationTokenSource.Token.IsCancellationRequested)
+                            break;
+
+                        int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationTokenSource.Token);
+                        if (bytesRead > 0)
+                        {
+                            waveProvider?.AddSamples(buffer, 0, bytesRead);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        if (isConnected)
+                        {
+                            this.Invoke((MethodInvoker)delegate
+                            {
+                                UpdateStatus("Audio receiving error", Color.Red);
+                            });
+                        }
+                        break;
+                    }
+                }
+            }, cancellationTokenSource.Token);
+        }
+
+        private void UpdateButtonStates(bool connected)
+        {
+            var connectButton = mainPanel.Controls["connectButton"] as Button;
+            var endButton = mainPanel.Controls["endButton"] as Button;
+            var muteButton = mainPanel.Controls["muteButton"] as Button;
+
+            if (connectButton != null) connectButton.Enabled = !connected;
+            if (endButton != null) endButton.Enabled = connected;
+            if (muteButton != null) muteButton.Enabled = connected;
+        }
+
+        private void UpdateStatus(string message, Color color)
+        {
+            var statusLabel = mainPanel.Controls["statusLabel"] as Label;
+            if (statusLabel != null)
+            {
+                statusLabel.Text = $"Status: {message}";
+                statusLabel.ForeColor = color;
+            }
+        }
+
+        private void EndCall(object sender, EventArgs e)
+        {
+            ResetConnection();
+            UpdateStatus("Call ended", Color.White);
+        }
+
+        private void ResetConnection()
+        {
+            isConnected = false;
+            isMicMuted = false;
+
+            cancellationTokenSource?.Cancel();
+
+            if (waveIn != null)
+            {
+                waveIn.StopRecording();
+                waveIn.Dispose();
+                waveIn = null;
+            }
+
+            if (waveOut != null)
+            {
+                waveOut.Stop();
+                waveOut.Dispose();
+                waveOut = null;
+            }
+
+            if (stream != null)
+            {
+                stream.Close();
+                stream = null;
+            }
+
+            if (client != null)
+            {
+                client.Close();
+                client = null;
+            }
+
+            if (server != null)
+            {
+                server.Stop();
+                server = null;
+            }
+
+            cancellationTokenSource?.Dispose();
+            cancellationTokenSource = null;
+
+            InitializeAudio();
+            UpdateButtonStates(false);
+        }
+
         private void AddToConnectionHistory(string serverIP)
         {
-            if (!string.IsNullOrWhiteSpace(serverIP))
+            if (string.IsNullOrWhiteSpace(serverIP) ||
+                serverIP == "Enter IP address to connect" ||
+                serverIP == "No Wi-Fi IPv4 address found")
+                return;
+
+            try
             {
                 string connectionInfo = $"{serverIP} - {DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}";
 
                 if (!connectionHistory.Contains(connectionInfo))
                 {
                     connectionHistory.Add(connectionInfo);
-                }
 
-                if (connectionHistory.Count > 10)
-                {
-                    connectionHistory.RemoveAt(0);
+                    connectionHistory = connectionHistory
+                        .Distinct()
+                        .OrderByDescending(entry => DateTime.ParseExact(
+                            entry.Split('-')[1].Trim(),
+                            "dd/MM/yyyy HH:mm:ss",
+                            CultureInfo.InvariantCulture))
+                        .Take(10)
+                        .ToList();
+
+                    SaveConnectionHistory();
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error updating connection history: {ex.Message}",
+                    "History Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -272,6 +546,7 @@ namespace Client
             clearButton.Click += (s, e) =>
             {
                 connectionHistory.Clear();
+                File.Delete(HISTORY_FILE_PATH);
                 historyListBox.Items.Clear();
                 historyListBox.Items.Add("No connection history available");
             };
@@ -292,78 +567,6 @@ namespace Client
             mainPanel.Controls.Add(clearButton);
             mainPanel.Controls.Add(backButton);
         }
-
-        private async void ConnectButton_Click(object sender, EventArgs e)
-        {
-            if (!isConnected)
-            {
-                var connectButton = mainPanel.Controls.Find("connectButton", false)[0] as Button;
-                var statusLabel = mainPanel.Controls.Find("statusLabel", false)[0] as Label;
-                var ipAddressTextBox = mainPanel.Controls.Find("ipAddressTextBox", false)[0] as TextBox;
-                var endButton = mainPanel.Controls.Find("endButton", false)[0] as Button;
-
-                connectButton.Enabled = false;
-                statusLabel.Text = "Status: Connecting...";
-                statusLabel.ForeColor = Color.Yellow;
-
-                try
-                {
-                    string serverIP = ipAddressTextBox.Text;
-                    await StartClientAsync(serverIP);
-                    AddToConnectionHistory(serverIP);
-                    waveIn.StartRecording();
-                    endButton.Enabled = true;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Connection error: {ex.Message}", "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    statusLabel.Text = "Status: Connection failed";
-                    statusLabel.ForeColor = Color.Red;
-                    connectButton.Enabled = true;
-                    return;
-                }
-            }
-        }
-
-        private async Task StartClientAsync(string serverIP)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(serverIP))
-                {
-                    throw new Exception("Please enter server IP address");
-                }
-
-                client = new TcpClient();
-                await client.ConnectAsync(serverIP, 8000);
-                stream = client.GetStream();
-
-                SetupSuccessfulConnection();
-                var statusLabel = mainPanel.Controls.Find("statusLabel", false)[0] as Label;
-                statusLabel.Text = "Status: Connected";
-                statusLabel.ForeColor = Color.Green;
-            }
-            catch (Exception)
-            {
-                if (client != null) client.Close();
-                throw;
-            }
-        }
-
-        private void SetupSuccessfulConnection()
-        {
-            isConnected = true;
-            var ipAddressTextBox = mainPanel.Controls.Find("ipAddressTextBox", false)[0] as TextBox;
-            var muteButton = mainPanel.Controls.Find("muteButton", false)[0] as Button;
-
-            ipAddressTextBox.Enabled = false;
-            muteButton.Enabled = true;
-
-            InitializeAudioDevices();
-            StartReceivingAudio();
-        }
-
 
         private void InitializeAudioDevices()
         {
@@ -402,38 +605,6 @@ namespace Client
                     statusLabel.ForeColor = Color.Red;
                 });
             }
-        }
-
-        private void StartReceivingAudio()
-        {
-            Task.Run(async () =>
-            {
-                byte[] buffer = new byte[4096];
-                while (isConnected && stream != null)
-                {
-                    try
-                    {
-                        int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-                        if (bytesRead > 0)
-                        {
-                            waveProvider.AddSamples(buffer, 0, bytesRead);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        if (isConnected)
-                        {
-                            this.Invoke((MethodInvoker)delegate
-                            {
-                                var statusLabel = mainPanel.Controls.Find("statusLabel", false)[0] as Label;
-                                statusLabel.Text = "Status: Audio receiving error";
-                                statusLabel.ForeColor = Color.Red;
-                            });
-                        }
-                        break;
-                    }
-                }
-            });
         }
 
         private void EndButton_Click(object sender, EventArgs e)

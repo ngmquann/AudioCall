@@ -137,7 +137,7 @@ namespace Client
             this.Controls.Add(this.sidePanel);
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form1";
-            this.Text = "Audio Call Control - Client";
+            this.Text = "Audio Call Control";
             this.sidePanel.ResumeLayout(false);
             this.ResumeLayout(false);
             SetButtonIcons();
